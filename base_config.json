@@ -1,0 +1,16 @@
+{
+    "ImageId":"ami-03ab297542b1261de",
+    "InstanceType": "t2.micro",
+    "KeyName": "aws_key",
+    "MaxCount": 1,
+    "MinCount": 1,
+    "Monitoring": {
+        "Enabled": true
+    },
+    "SecurityGroups": [
+        "my-ip-only"
+    ],
+    "IamInstanceProfile": {
+        "Name": "aws_s3_access"
+    }
+}
