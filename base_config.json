@@ -1,5 +1,5 @@
 {
-    "ImageId":"ami-03ab297542b1261de",
+    "ImageId":"ami-01b63af33be421653",
     "InstanceType": "t2.micro",
     "KeyName": "aws_key",
     "MaxCount": 1,

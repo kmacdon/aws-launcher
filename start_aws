@@ -1,4 +1,6 @@
+#!/usr/bin/env python3
 import argparse
+import webbrowser as wb
 from launcher import Launcher
 
 parser = argparse.ArgumentParser(description='Launch an ec2 instance')
@@ -7,7 +9,9 @@ parser.add_argument('--size', '-s', type=str, nargs='?', default='test')
 args = parser.parse_args()
 
 launcher = Launcher()
-image_id = launcher.launch_instance(args.size)
+image_id, public_nds = launcher.launch_instance(args.size)
+
+wb.open(f"http://{public_dns}:80", 1)
 
 stop = "no"
 while stop != "yes":
