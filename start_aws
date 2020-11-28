@@ -5,11 +5,12 @@ from launcher import Launcher
 
 parser = argparse.ArgumentParser(description='Launch an ec2 instance')
 parser.add_argument('--size', '-s', type=str, nargs='?', default='test')
+parser.add_argument('--version','-v', type=str, default='python')
 
 args = parser.parse_args()
 
 launcher = Launcher()
-image_id, public_nds = launcher.launch_instance(args.size)
+image_id, public_nds = launcher.launch_instance(args.size, args.version)
 
 wb.open(f"http://{public_dns}:80", 1)
 

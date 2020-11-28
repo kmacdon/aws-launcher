@@ -8,7 +8,7 @@ class Launcher:
         self.ec2 = boto3.client('ec2')
         self.ssh = None
 
-    def launch_instance(self, size):
+    def launch_instance(self, size, version):
         with open("base_config.json") as f:
             config = json.load(f)
 
@@ -19,6 +19,7 @@ class Launcher:
         elif size == "large":
             config['InstanceType'] = "m4.4xlarge"
 
+        yaml_file = 'jupyter-comp.yaml' if version == 'python' else 'rstudio-comp.yaml'
         print("Launching instance...")
         result = self.ec2.run_instances(**config)
         image_id = result['Instances'][0]['InstanceId']
@@ -39,14 +40,16 @@ class Launcher:
 
         print("Uploading files...")
         self.ssh = SSH("/Users/kevinmacdonald/.ssh/aws_key.pem", "ubuntu", public_dns)
-        self.ssh.upload_files(["jupyter-comp.yaml"])
+        self.ssh.upload_files([yaml_file])
         self.ssh.upload_files(["aws_credentials.env"])
+        self.ssh.upload_files(["aws_credentials"])
+        self.ssh.upload_files(["rstudio-password"])
         self.ssh.upload_files(["/Users/kevinmacdonald/.ssh/aws_git"])
 
         print("Launching docker...")
         self.ssh.execute_commands([
             "sudo docker swarm init",
-            "sudo docker stack deploy -c jupyter-comp.yaml jup"
+            f"sudo docker stack deploy -c {yaml_file} jup"
             ])
 
         print(f"ssh -i ~/.ssh/aws_key.pem ubuntu@{public_dns}")
