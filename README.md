@@ -1,6 +1,6 @@
 # AWS Launcher
 
-This project is a command line tool to launch AWS EC2 instances easily. It uses the boto3 package to launch the instance with an AMI I created that has Docker installed and a docker container I created based off of the jupyter/datascience-notebook docker image. This container launches jupyter lab and is password protected.
+This project is a command line tool to launch AWS EC2 instances easily. It uses the boto3 package to launch the instance with an AMI I created that has Docker installed and a docker container I created based off of the jupyter/datascience-notebook docker image. This container launches jupyter lab and is password protected based on the jupyter config file I passed to the docker image I made when building it.
 
 ### Instructions
 
