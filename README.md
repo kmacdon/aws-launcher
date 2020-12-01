@@ -5,7 +5,7 @@ This project is a command line tool to launch AWS EC2 instances easily. It uses 
 ### Instructions
 
 ```
-python start_aws.py --size <size>
+start_aws--size <size>
 ```
 
 The size argument determines how big of an ec2 instance to launch, acceptable sizes being small, medium, or large. If no size is given, it launches a t2.micro instance as a test run.

@@ -6,16 +6,17 @@ from launcher import Launcher
 parser = argparse.ArgumentParser(description='Launch an ec2 instance')
 parser.add_argument('--size', '-s', type=str, nargs='?', default='test')
 parser.add_argument('--version','-v', type=str, default='python')
+parser.add_argument('--security','-g', type=str, default='my-ip-only')
 
 args = parser.parse_args()
 
 launcher = Launcher()
-image_id, public_nds = launcher.launch_instance(args.size, args.version)
+image_id, public_dns = launcher.launch_instance(args.size, args.version, args.security)
 
 wb.open(f"http://{public_dns}:80", 1)
 
 stop = "no"
-while stop != "yes":
-    stop = input("Stop Instance?")
+while stop != "y":
+    stop = input("Stop Instance? (y/n)")
 
 launcher.stop_instance(image_id)

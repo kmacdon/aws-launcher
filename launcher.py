@@ -8,7 +8,7 @@ class Launcher:
         self.ec2 = boto3.client('ec2')
         self.ssh = None
 
-    def launch_instance(self, size, version):
+    def launch_instance(self, size, version, security_group):
         with open("base_config.json") as f:
             config = json.load(f)
 
@@ -18,6 +18,8 @@ class Launcher:
             config['InstanceType'] = "m4.2xlarge"
         elif size == "large":
             config['InstanceType'] = "m4.4xlarge"
+
+        config['SecurityGroups'] = [security_group]
 
         yaml_file = 'jupyter-comp.yaml' if version == 'python' else 'rstudio-comp.yaml'
         print("Launching instance...")
@@ -37,6 +39,7 @@ class Launcher:
             time.sleep(5)
 
         public_dns = info['Reservations'][0]['Instances'][0]['PublicDnsName']
+        print(f"Launched instance at {public_dns}")
 
         print("Uploading files...")
         self.ssh = SSH("/Users/kevinmacdonald/.ssh/aws_key.pem", "ubuntu", public_dns)
@@ -52,6 +55,7 @@ class Launcher:
             f"sudo docker stack deploy -c {yaml_file} jup"
             ])
 
+        time.sleep(15)
         print(f"ssh -i ~/.ssh/aws_key.pem ubuntu@{public_dns}")
         print(public_dns)
 
